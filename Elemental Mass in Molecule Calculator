@@ -1,13 +1,53 @@
 import re
 
+
 def main():
-    print("This tool calculates the portion of each element in a molecule. For accurate results, input the formula without consideration of structure. ")
-    print("For an example: Methanoic acid should be referred as C2H4O2 or CH2O, but not CH3COOH")
-    print("Please note that it assumes that the atoms referred to are the most common isotope")
-    print("Remember to have the codes with the first letter capitalised: Na not na or NA")
+    tc = input("This program works under the AGPL license, would you like to proceed [y/N]:  ")
+    if tc.lower().strip() == "n":
+        quit()
+    elif tc.lower().strip() == "y":
+        pass
+    else:
+        print("Input must be y or n")
+        quit()
+    choice = input("Would you like to use the converter or see the instructions [c/i]:  ")
+
+    if choice.lower().strip() == 'c':
+        conversion()
+
+        while True:
+            print()
+            question = input("Would you like to continue [y/N]:  ")
+
+            if question == "y":
+                conversion()
+                pass
+            elif question == "n":
+                break
+            else:
+                print("Input must be y or n")
+    elif choice.lower().strip() == 'i':
+        print("This tool calculates the portion of each element in a molecule. For accurate results, input the formula without consideration of structure.")
+        print("For an example: Methanoic acid should be referred as C2H4O2, but not CH3COOH")
+        print("Please note that it assumes that the atoms referred to are the most common isotope")
+        print("Remember to have the codes with the first letter capitalised: Na not na or NA")
+    else:
+        print("Input must be c or i")
+        quit()
+
+
+
+
+
+
+def conversion():
     chemical = input("Formula:  ")
     regex  = [[elem[0], elem[1]] for elem in re.findall(r"([A-Z][a-z]?)(\d*)", chemical)]
-    atomic_masses = convert(regex)
+    converted_data = convert(regex)
+    atomic_masses = converted_data[0]
+    mass = str(round(converted_data[1], 3))
+    print()
+    print(chemical+": "+mass)
     # creating an atomic masses list and putting it in the convert function
     for i in range(len(atomic_masses)):
         print(atomic_masses[i]['name'] + ': ' + atomic_masses[i]['mass'])
@@ -138,12 +178,12 @@ def convert(regex):
         mass += periodic_table[regex[i][0]][1]*float(regex[i][1])
     for i in range(len(regex)):
         atomic_masses.append({"name": periodic_table[regex[i][0]][0], "mass": str(round((periodic_table[regex[i][0]][1]*float(regex[i][1])/mass)*100, 3))+"%"})
-    # Printing the name of the element and its percentage of the mass of the element 
+    # Printing the name of the element and its percentage of the mass of the element
 
 
 
 
-    return atomic_masses
+    return (atomic_masses, mass)
 
 
 
