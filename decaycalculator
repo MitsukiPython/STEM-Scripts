@@ -1,0 +1,37 @@
+def main():
+    while True:
+        try:
+            rateofdecay = input("Annual Rate of Decay:  ")
+
+            if not rateofdecay.strip().endswith("%") and not rateofdecay.strip("%").isdigit():
+                raise ValueError
+
+            quantity = input("Quantity:  ")
+
+            if not quantity.lower().strip().strip("kg").strip().isdigit():
+                raise ValueError
+
+            duration = input("Duration:  ")
+
+            if not duration.strip().lower().strip("s").strip("year").strip().isdigit():
+                raise ValueError
+
+            rateofdecay = 1-(float(rateofdecay.strip().strip("%").strip())/100)
+            quantity = float(quantity.lower().strip().strip("kg").strip())
+            duration = float(duration.strip().lower().strip("s").strip("year").strip())
+
+            endquan = round(quantity*rateofdecay**duration, 3)
+            print(endquan, "kg")
+            break
+        except EOFError:
+            break
+        except:
+            print("For rate of decay, input in %, for quantity, input in kilograms, for duration, input in years.")
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()
